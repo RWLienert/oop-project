@@ -1,8 +1,0 @@
-# define macros
-CC = g++
-# define options passed to the compiler and relevant scripts
-CFLAGS = -c-Wall
-
-test1: Main.cpp Game.cpp
-	@$(CC) Main.cpp Game.cpp -o test1
-	@./test1
