@@ -3,19 +3,21 @@
 
 #include <SFML/Graphics.hpp>
 #include "Entity.h"
+#include "Catapult.h"
 #include <iostream>
 using namespace sf;
 using namespace std;
 
 class Castle : public Entity{
     protected:
-        int health;
+        int lives;
         Vector2f centre;
-        int width;
-        int height;
+        Catapult** catapults;
     public:
-        Castle(int health, int width, int height);
+        Castle(int lives, int width, int height);
         void spawn(int winX, int winY);
+        void draw(RenderWindow* win);
+        Catapult** getCatapults();
         ~Castle();
 };
 
