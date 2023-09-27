@@ -3,7 +3,8 @@
 // create window
 Game::Game(int width, int height,string title){
     win = new RenderWindow(VideoMode(width,height),title);
-    castle = new Castle(100,80,80);
+    win->setFramerateLimit(60);
+    castle = new Castle(100,100,100);
 }
 
 // load objects
@@ -21,7 +22,7 @@ void Game::run(){
                 win->close();
             }
         }
-        win->clear();
+        win->clear(Color(42,120,59));
         castle->draw(win);
         win->display();
     }
