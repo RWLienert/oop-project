@@ -12,10 +12,13 @@ class Game{
     protected:
         RenderWindow* win;
         Castle* castle;
+        bool clickOn;
+        int currentCatapult;
     public:
         Game(int width, int height, string title);
         void load();
         void run();
+        void moveCatapult(Vector2f translatedPos, int currentCatapult);
         ~Game();
 };
 
