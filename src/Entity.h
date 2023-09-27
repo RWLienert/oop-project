@@ -10,6 +10,8 @@ class Entity{
     protected:
         Shape* body;
         bool alive;
+        int width;
+        int height;
     public:
         void draw(RenderWindow* win);
         virtual void spawn(int winX, int winY) = 0;
