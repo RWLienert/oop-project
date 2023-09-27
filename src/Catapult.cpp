@@ -18,6 +18,10 @@ void Catapult::spawn(int cornerX, int cornerY){
     pivot = Vector2f(cornerX,cornerY);
 }
 
+Shape* Catapult::getBody(){
+    return body;
+}
+
 Catapult::~Catapult(){
     delete this->body;
 }

@@ -13,6 +13,7 @@ class Catapult : public Entity{
     public:
         Catapult(int width, int height);
         void spawn(int cornerX, int cornerY);
+        Shape* getBody();
         ~Catapult();
 };
 
