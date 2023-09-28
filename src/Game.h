@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "Castle.h"
+#include "Arrow.h"
 #include <iostream>
 #include <string>
 using namespace sf;
@@ -12,6 +13,7 @@ class Game{
     protected:
         RenderWindow* win;
         Castle* castle;
+        Arrow* arrow;
         bool clickOn;
         int currentCatapult;
     public:
