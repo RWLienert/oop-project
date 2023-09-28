@@ -14,6 +14,7 @@ class Catapult : public Entity{
         Catapult(int width, int height);
         void spawn(int cornerX, int cornerY);
         Shape* getBody();
+        Vector2f getPivot();
         ~Catapult();
 };
 
