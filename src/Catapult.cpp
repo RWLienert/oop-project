@@ -22,6 +22,10 @@ Shape* Catapult::getBody(){
     return body;
 }
 
+Vector2f Catapult::getPivot(){
+    return pivot;
+}
+
 Catapult::~Catapult(){
     delete this->body;
 }
