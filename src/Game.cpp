@@ -1,11 +1,12 @@
 #include "Game.h"
 #include <cmath>
 
-// create window
+// create window and objects
 Game::Game(int width, int height,string title){
     win = new RenderWindow(VideoMode(width,height),title);
     win->setFramerateLimit(60);
     castle = new Castle(100,100,100);
+    arrow = new Arrow("resources/arrow.png");
 }
 
 // load objects
@@ -22,8 +23,23 @@ void Game::moveCatapult(Vector2f translatedPos, int currentCatapult){
         float difX = currentPosition.x - translatedPos.x;
         float difY = currentPosition.y - translatedPos.y;
 
+        // calculate the distance between mouse and catapult
+        float scaleArrow = sqrt(difX*difX+difY*difY);
+        if (scaleArrow > 300) {
+            scaleArrow = 300;
+            arrow->getSprite()->setColor(Color::Red);
+        }
+
+        // alter the arrow's length and colour based on position
+        arrow->getSprite()->setScale(1.5+(scaleArrow*0.002),1.5);
+        arrow->getBar()->setScale(1+(scaleArrow*0.0013),1);
+        arrow->getBar()->setFillColor(Color(227, 206-scaleArrow/2, 18));
+
+        // calculate rotation and apply it to the objects
         float rotation = (atan2(difY,difX))* 180/PI;
         castle->getCatapults()[currentCatapult]->getBody()->setRotation(rotation);
+        arrow->getSprite()->setRotation(rotation);
+        arrow->getBar()->setRotation(rotation);
     }
 }
 
@@ -46,6 +62,7 @@ void Game::run(){
                 for (int i = 0; i < 4; i++){
                     // check whether mouse cursor overlaps a catapult's outline
                     if (castle->getCatapults()[i]->getBody()->getGlobalBounds().contains(translatedPos)){
+                        arrow->spawn(castle->getCatapults()[i]->getPivot().x,castle->getCatapults()[i]->getPivot().y);
                         currentCatapult = i;
                         clickOn = true;
                         clickCount++;
@@ -53,12 +70,14 @@ void Game::run(){
                 }
                 if (clickCount == 0) {
                     clickOn = false;
+                    arrow->spawn(-400,-400);
                 }
             }
             moveCatapult(translatedPos, currentCatapult);
         }
         win->clear(Color(42,120,59));
         castle->draw(win);
+        arrow->draw(win);
         win->display();
     }
 }
