@@ -1,27 +1,34 @@
 #include "Castle.h"
 #include <time.h>
 
-Castle::Castle(int lives, int width, int height){
+Castle::Castle(int lives, int width, int height,string imgDirectory){
     // initialise values
     this->lives = lives;
     this->width = width;
     this->height = height;
-    // setup body
-    body = new RectangleShape(Vector2f(width,height));
-    body->setOrigin(width/2,height/2);
-    body->setFillColor(Color(132, 138, 133));
+
+    texture = new Texture();
+    sprite = new Sprite();
+    if (!texture->loadFromFile(imgDirectory)){
+        cout << "Castle Texture didn't load" << endl;
+    }
+    texture->setSmooth(true);
+    sprite->setTexture(*texture);
+    sprite->setOrigin(width/2,height/2);
+    sprite->scale(1.4,1.4);
+
     alive = false;
     // create 4 catapults
     catapults = new Catapult*[4];
     for (int i = 0; i < 4; i++) {
-        catapults[i] = new Catapult(40,12);
+        catapults[i] = new Catapult(50,12,"resources/catapult.png");
     }
     srand(time(0));
 }
 
 // overides Entity draw function to display the catapults
 void Castle::draw(RenderWindow* win){
-    win->draw(*body);
+    win->draw(*sprite);
     for (int i = 0; i < 4; i++) {
         catapults[i]->draw(win);
     }
@@ -31,7 +38,7 @@ void Castle::draw(RenderWindow* win){
 void Castle::spawn(int winX, int winY){
     int randX = winX/3 + rand() % (winX - (2*winX)/3);
     int randY = winY/3 + rand() % (winY - (2*winY)/3);
-    body->setPosition(randX,randY);
+    sprite->setPosition(randX,randY);
     cout << randX << endl;
     cout << randY << endl;
     alive = true;
@@ -47,5 +54,6 @@ Catapult** Castle::getCatapults(){
 }
 
 Castle::~Castle(){
-    delete this->body;
+    delete this->sprite;
+    delete this->catapults;
 }
