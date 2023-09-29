@@ -11,9 +11,10 @@ class Catapult : public Entity{
     protected:
         Vector2f pivot;
     public:
-        Catapult(int width, int height);
+        Catapult(int width, int height, string imgDirectory);
         void spawn(int cornerX, int cornerY);
-        Shape* getBody();
+        void draw(RenderWindow* win);
+        Sprite* getSprite();
         Vector2f getPivot();
         ~Catapult();
 };
