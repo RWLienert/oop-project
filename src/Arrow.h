@@ -9,8 +9,7 @@ using namespace std;
 
 class Arrow : public Entity{
     private:
-        Texture* texture;
-        Sprite* sprite;
+        Shape* body;
     public:
         Arrow(string imgDirectory);
         void spawn(int centreX, int centreY);

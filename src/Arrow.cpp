@@ -4,7 +4,7 @@ Arrow::Arrow(string imgDirectory){
     // creates the arrow's texture, sprite and power bar
     texture = new Texture();
     sprite = new Sprite();
-    if (!texture->loadFromFile("resources/arrow.png")){
+    if (!texture->loadFromFile(imgDirectory)){
         cout << "Arrow Texture didn't load" << endl;
     }
     texture->setSmooth(true);
@@ -38,4 +38,5 @@ Shape* Arrow::getBar(){
 Arrow::~Arrow(){
     delete this->sprite;
     delete this->texture;
+    delete this->body;
 }
