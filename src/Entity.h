@@ -8,12 +8,13 @@ using namespace std;
 
 class Entity{
     protected:
-        Shape* body;
+        Texture* texture;
+        Sprite* sprite;
         bool alive;
         int width;
         int height;
     public:
-        void draw(RenderWindow* win);
+        virtual void draw(RenderWindow* win) = 0;
         virtual void spawn(int winX, int winY) = 0;
 };
 
