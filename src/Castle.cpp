@@ -21,7 +21,7 @@ Castle::Castle(int lives, int width, int height,string imgDirectory){
     // create 4 catapults
     catapults = new Catapult*[4];
     for (int i = 0; i < 4; i++) {
-        catapults[i] = new Catapult(50,12,"resources/catapult.png");
+        catapults[i] = new Catapult(50,12,"resources/catapult.png",3);
     }
     srand(time(0));
 }
