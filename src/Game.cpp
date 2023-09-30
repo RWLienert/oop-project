@@ -17,22 +17,32 @@ void Game::load(){
 // move catapults based on mouse location
 void Game::moveCatapult(Vector2f translatedPos, int currentCatapult){
     if (clickOn == true) {
-        // math to find the required angle to move the catapult
+        // math to find the required angle to move the catapult and fireball
         Vector2f currentPosition = castle->getCatapults()[currentCatapult]->getSprite()->getPosition();
         const float PI = 3.14159265;
         float difX = currentPosition.x - translatedPos.x;
         float difY = currentPosition.y - translatedPos.y;
 
+        direction.x = -difX/(sqrt(difX*difX+difY*difY));
+        direction.y = -difY/(sqrt(difX*difX+difY*difY));
+
+        // Equation describes where the fireball's path starts
+        float startX = currentPosition.x + 40 * direction.x;
+        float startY = currentPosition.y + 40 * direction.y;
+
+        startPos.x = startX;
+        startPos.y = startY;
+
         // calculate the distance between mouse and catapult
-        float scaleArrow = sqrt(difX*difX+difY*difY);
-        if (scaleArrow > 300) {
-            scaleArrow = 300;
+        power = sqrt(difX*difX+difY*difY);
+        if (power > 300) {
+            power = 300;
         }
 
         // alter the arrow's length and colour based on position
-        arrow->getSprite()->setScale(1.5+(scaleArrow*0.002),1.5);
-        arrow->getBar()->setScale(1+(scaleArrow*0.0013),1);
-        arrow->getBar()->setFillColor(Color(227, 206-scaleArrow/2, 18));
+        arrow->getSprite()->setScale(1.5+(power*0.002),1.5);
+        arrow->getBar()->setScale(1+(power*0.0013),1);
+        arrow->getBar()->setFillColor(Color(227, 206-power/2, 18));
 
         // calculate rotation and apply it to the objects
         float rotation = (atan2(difY,difX))* 180/PI;
@@ -68,6 +78,14 @@ void Game::run(){
                     }
                 }
                 if (clickCount == 0) {
+                    if (clickOn == true){
+                        // Allows the fireball to be fired and to reload the bullets
+                        castle->getCatapults()[currentCatapult]->updateFire(power,startPos,direction);
+                        castle->getCatapults()[currentCatapult]->fire(startPos.x,startPos.y);
+                        if (castle->getCatapults()[currentCatapult]->remaining() <= 0){
+                            castle->getCatapults()[currentCatapult]->reload();
+                        }
+                    }
                     clickOn = false;
                     arrow->spawn(-400,-400);
                 }
@@ -83,4 +101,6 @@ void Game::run(){
 
 Game::~Game(){
     delete win;
+    delete castle;
+    delete arrow;
 }
