@@ -16,6 +16,9 @@ class Game{
         Arrow* arrow;
         bool clickOn;
         int currentCatapult;
+        Vector2f startPos;
+        Vector2f direction;
+        float power;
     public:
         Game(int width, int height, string title);
         void load();
