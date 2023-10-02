@@ -52,10 +52,6 @@ void Fireball::spawn(int endX, int endY){
     alive = true;
 }
 
-int Fireball::getSpeed(){
-    return speed;
-}
-
 Fireball::~Fireball(){
     delete this->sprite;
 }

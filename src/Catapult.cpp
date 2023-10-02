@@ -71,10 +71,6 @@ void Catapult::setRemaining(){
     remainingBalls = numBalls;
 }
 
-Sprite* Catapult::getSprite(){
-    return sprite;
-}
-
 Vector2f Catapult::getPivot(){
     return pivot;
 }

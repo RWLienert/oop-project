@@ -19,6 +19,7 @@ class Game{
         Vector2f startPos;
         Vector2f direction;
         float power;
+        int lives;
     public:
         Game(int width, int height, string title);
         void load();

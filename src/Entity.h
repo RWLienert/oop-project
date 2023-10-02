@@ -15,7 +15,8 @@ class Entity{
         int height;
     public:
         virtual void draw(RenderWindow* win) = 0;
-        virtual void spawn(int winX, int winY) = 0;
+        virtual void spawn(int x, int y) = 0;
+        Sprite* getSprite();
 };
 
 #endif

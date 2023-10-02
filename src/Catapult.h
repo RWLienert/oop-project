@@ -28,7 +28,6 @@ class Catapult : public Entity{
         void updateFire(float power, Vector2f startPos, Vector2f direction);
         int remaining();
         void setRemaining();
-        Sprite* getSprite();
         Vector2f getPivot();
         ~Catapult();
 };

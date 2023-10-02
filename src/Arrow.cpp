@@ -27,10 +27,6 @@ void Arrow::draw(RenderWindow* win) {
     win->draw(*body);
 }
 
-Sprite* Arrow::getSprite(){
-    return sprite;
-}
-
 Shape* Arrow::getBar(){
     return body;
 }

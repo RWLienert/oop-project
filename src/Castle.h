@@ -10,11 +10,10 @@ using namespace std;
 
 class Castle : public Entity{
     protected:
-        int lives;
         Vector2f centre;
         Catapult** catapults;
     public:
-        Castle(int lives, int width, int height,string imgDirectory);
+        Castle(int width, int height,string imgDirectory);
         void spawn(int winX, int winY);
         void draw(RenderWindow* win);
         Catapult** getCatapults();

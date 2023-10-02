@@ -17,7 +17,6 @@ class Fireball : public Entity{
         void reload();
         void draw(RenderWindow* win);
         void spawn(int endX, int endY);
-        int getSpeed();
         ~Fireball();
 };
 

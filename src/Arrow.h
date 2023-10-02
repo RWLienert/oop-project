@@ -14,7 +14,6 @@ class Arrow : public Entity{
         Arrow(string imgDirectory);
         void spawn(int centreX, int centreY);
         void draw(RenderWindow* win);
-        Sprite* getSprite();
         Shape* getBar();
         ~Arrow();
 };

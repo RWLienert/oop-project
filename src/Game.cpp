@@ -5,7 +5,7 @@
 Game::Game(int width, int height,string title){
     win = new RenderWindow(VideoMode(width,height),title);
     win->setFramerateLimit(60);
-    castle = new Castle(4,140,140,"resources/castle.png");
+    castle = new Castle(140,140,"resources/castle.png");
     arrow = new Arrow("resources/arrow.png");
 }
 

@@ -1,9 +1,8 @@
 #include "Castle.h"
 #include <time.h>
 
-Castle::Castle(int lives, int width, int height,string imgDirectory){
+Castle::Castle(int width, int height,string imgDirectory){
     // initialise values
-    this->lives = lives;
     this->width = width;
     this->height = height;
 
