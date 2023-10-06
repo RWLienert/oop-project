@@ -63,8 +63,15 @@ void Game::run(){
             int clickCount = 0;
             Vector2i mousePos = Mouse::getPosition(*win);
             Vector2f translatedPos = win->mapPixelToCoords(mousePos);
-            if (e.type == Event::Closed){
-                win->close();
+            switch(e.type){
+                case Event::Closed:
+                    win->close();
+                    break;
+                case Event::KeyPressed:
+                    if(e.key.code == Keyboard::Escape){
+                        win->close();
+                    }
+                    break;
             }
             // check for click
             if (Mouse::isButtonPressed(Mouse::Left)){
