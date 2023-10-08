@@ -7,3 +7,7 @@ void Entity::spawn(int winX, int winY){}
 Sprite* Entity::getSprite(){
     return sprite;
 }
+
+void Entity::setCastlePos(Vector2f castlePos){
+    this->castlePos = castlePos;
+}

@@ -10,6 +10,7 @@ class Entity{
     protected:
         Texture* texture;
         Sprite* sprite;
+        Vector2f castlePos;
         bool alive;
         int width;
         int height;
@@ -17,6 +18,7 @@ class Entity{
         virtual void draw(RenderWindow* win) = 0;
         virtual void spawn(int x, int y) = 0;
         Sprite* getSprite();
+        void setCastlePos(Vector2f castlePos);
 };
 
 #endif
