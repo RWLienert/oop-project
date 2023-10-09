@@ -1,5 +1,6 @@
 #include "Game.h"
 #include <cmath>
+#include <SFML/System/Clock.hpp>
 
 // create window and objects
 Game::Game(int width, int height,string title){
@@ -7,10 +8,16 @@ Game::Game(int width, int height,string title){
     win->setFramerateLimit(60);
     castle = new Castle(140,140,"resources/castle.png");
     arrow = new Arrow("resources/arrow.png");
+    maxEnemies = 10;
+    onagers = new Onager*[maxEnemies];
+    for (int i = 0; i < maxEnemies; i++) {
+        onagers[i] = new Onager(30,30);
+    }
 }
 
 // load objects
 void Game::load(){
+    spawnCount = 0;
     castle->spawn(win->getSize().x,win->getSize().y);
 }
 
@@ -56,7 +63,9 @@ void Game::moveCatapult(Vector2f translatedPos, int currentCatapult){
 void Game::run(){
     load();
     clickOn = false;
+    Clock clock;
     while (win->isOpen()){
+        Time deltaTime = clock.restart();
         Event e;
         while (win->pollEvent(e)){
             // calculate position
@@ -101,7 +110,16 @@ void Game::run(){
         }
         win->clear(Color(42,120,59));
         castle->draw(win);
+        enemySpawnTimer += deltaTime.asMilliseconds();
+        if (enemySpawnTimer >= enemySpawnInterval && spawnCount < maxEnemies){
+            onagers[spawnCount]->spawn(win->getSize().x, win->getSize().y);
+            enemySpawnTimer = 0.0f; // Reset the timer
+            spawnCount++;
+        }
         arrow->draw(win);
+        for (int i = 0; i < maxEnemies; i++){
+            onagers[i]->draw(win);
+        }
         win->display();
     }
 }
