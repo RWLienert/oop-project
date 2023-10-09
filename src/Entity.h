@@ -18,7 +18,6 @@ class Entity{
         virtual void draw(RenderWindow* win) = 0;
         virtual void spawn(int x, int y) = 0;
         Sprite* getSprite();
-        void setCastlePos(Vector2f castlePos);
 };
 
 #endif
