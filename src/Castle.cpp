@@ -40,8 +40,8 @@ void Castle::spawn(int winX, int winY){
     sprite->setPosition(randX,randY);
     cout << randX << endl;
     cout << randY << endl;
-    castlePos.x = randX;
-    castlePos.y = randY;
+    position.x = randX;
+    position.y = randY;
     alive = true;
     centre = Vector2f(randX,randY);
     catapults[0]->spawn(centre.x-width/2,centre.y-width/2);

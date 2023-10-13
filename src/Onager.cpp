@@ -14,6 +14,8 @@ Onager::Onager(int width, int height){
 void Onager::draw(RenderWindow* win){
     if (alive == true){
         win->draw(*body);
+        position = Vector2f(body->getPosition().x, body->getPosition().y);
+        body->move(0.5,0);
     }
 }
 
@@ -21,6 +23,7 @@ void Onager::spawn(int winX, int winY){
     int onagerRandX = rand() % (winX - 20);
     int onagerRandY = rand() % (winY - 20);
     body->setPosition(static_cast<float>(onagerRandX), static_cast<float>(onagerRandY));
+    position = Vector2f(body->getPosition().x, body->getPosition().y);
     alive = true;
 }
 

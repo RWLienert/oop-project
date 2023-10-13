@@ -33,6 +33,7 @@ class Game{
         void load();
         void run();
         void moveCatapult(Vector2f translatedPos, int currentCatapult);
+        
         ~Game();
 };
 

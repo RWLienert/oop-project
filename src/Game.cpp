@@ -121,6 +121,16 @@ void Game::run(){
             enemySpawnTimer = 0.0f; // Reset the timer
             spawnCount++;
         }
+
+        for (int i = 0; i < maxEnemies; i++){
+            if (onagers[i]->getAlive() == true && onagers[i]->getPosition().x > castle->getPosition().x - 90 && onagers[i]->getPosition().x < castle->getPosition().x + 90 && onagers[i]->getPosition().y > castle->getPosition().y - 90 && onagers[i]->getPosition().y < castle->getPosition().y + 90){
+                onagers[i]->setAlive(false);
+            }
+            if (rams[i]->getAlive() == true && rams[i]->getPosition().x > castle->getPosition().x - 90 && rams[i]->getPosition().x < castle->getPosition().x + 90 && rams[i]->getPosition().y > castle->getPosition().y - 90 && rams[i]->getPosition().y < castle->getPosition().y + 90){
+                rams[i]->setAlive(false);
+            }
+        }
+
         arrow->draw(win);
         for (int i = 0; i < maxEnemies; i++){
             onagers[i]->draw(win);
