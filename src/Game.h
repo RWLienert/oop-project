@@ -5,6 +5,7 @@
 #include "Castle.h"
 #include "Arrow.h"
 #include "Onager.h"
+#include "Ram.h"
 #include <iostream>
 #include <string>
 using namespace sf;
@@ -16,6 +17,7 @@ class Game{
         Castle* castle;
         Arrow* arrow;
         Onager** onagers;
+        Ram** rams;
         bool clickOn;
         int currentCatapult;
         Vector2f startPos;

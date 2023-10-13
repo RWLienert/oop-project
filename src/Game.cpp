@@ -13,6 +13,10 @@ Game::Game(int width, int height,string title){
     for (int i = 0; i < maxEnemies; i++) {
         onagers[i] = new Onager(30,30);
     }
+    rams = new Ram*[maxEnemies];
+    for (int i = 0; i < maxEnemies; i++) {
+        rams[i] = new Ram(30,30, "resources/ram.png");
+    }
 }
 
 // load objects
@@ -113,12 +117,14 @@ void Game::run(){
         enemySpawnTimer += deltaTime.asMilliseconds();
         if (enemySpawnTimer >= enemySpawnInterval && spawnCount < maxEnemies){
             onagers[spawnCount]->spawn(win->getSize().x, win->getSize().y);
+            rams[spawnCount]->spawn(win->getSize().x, win->getSize().y);
             enemySpawnTimer = 0.0f; // Reset the timer
             spawnCount++;
         }
         arrow->draw(win);
         for (int i = 0; i < maxEnemies; i++){
             onagers[i]->draw(win);
+            rams[i]->draw(win);
         }
         win->display();
     }
