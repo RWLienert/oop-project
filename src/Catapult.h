@@ -29,6 +29,7 @@ class Catapult : public Entity{
         int remaining();
         void setRemaining();
         Vector2f getPivot();
+        Fireball** getFireballs();
         ~Catapult();
 };
 

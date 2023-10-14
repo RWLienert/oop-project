@@ -75,6 +75,10 @@ Vector2f Catapult::getPivot(){
     return pivot;
 }
 
+Fireball** Catapult::getFireballs(){
+    return fireballs;
+}
+
 Catapult::~Catapult(){
     delete this->sprite;
     delete [] this->fireballs;
