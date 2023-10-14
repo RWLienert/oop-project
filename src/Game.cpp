@@ -239,6 +239,18 @@ void Game::run(){
                 spawnCount++;
             }
 
+            // enemy movement
+
+            Vector2f castlePos = castle->getPosition();
+            for (int i = 0; i < maxEnemies; i++){
+                if (onagers[i]->getAlive() == true){
+                    onagers[i]->movePath(castlePos);
+                }
+                if (rams[i]->getAlive() == true){
+                    rams[i]->movePath(castlePos);
+                }
+            }
+
             // collision code for enemies and castle
             for (int i = 0; i < maxEnemies; i++){
                 if (onagers[i]->getAlive() == true && onagers[i]->getPosition().x > castle->getPosition().x - 90 && onagers[i]->getPosition().x < castle->getPosition().x + 90 && onagers[i]->getPosition().y > castle->getPosition().y - 90 && onagers[i]->getPosition().y < castle->getPosition().y + 90){
