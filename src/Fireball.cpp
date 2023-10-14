@@ -11,6 +11,8 @@ Fireball::Fireball(string imgDirectory){
     sprite->setTexture(*texture);
     sprite->setOrigin(21/2,21/2);
     alive = false;
+    firePos.x = -100;
+    firePos.y = -100;
 }
 
 void Fireball::move(float power, Vector2f startPos, Vector2f direction){
@@ -31,6 +33,7 @@ void Fireball::move(float power, Vector2f startPos, Vector2f direction){
         }
     }
     else{
+        firePos = Vector2f(sprite->getPosition().x,sprite->getPosition().y);
         alive = false;
     }
 }
