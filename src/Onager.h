@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "Enemy.h"
+#include <cmath>
 #include <vector>
 #include <ctime>
 #include <iostream>
@@ -17,6 +18,7 @@ class Onager : public Enemy{
         Onager(int width, int height);
         void draw(RenderWindow* win);
         void spawn(int winX, int winY);
+        void movePath(Vector2f castlePosition);
         ~Onager();
 };
 
