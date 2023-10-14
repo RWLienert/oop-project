@@ -11,8 +11,9 @@ class Enemy : public Entity{
     protected:
         int speed;
         int health;
+        Vector2f castlePosition;
     public:
-        virtual void movePath(Vector2f start, Vector2f end);
+        virtual void movePath(Vector2f castlePosition);
 };
 
 #endif
