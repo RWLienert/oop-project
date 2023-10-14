@@ -228,6 +228,27 @@ void Game::run(){
                 }
             }
 
+            // collision code for fireballs and enemies
+            for (int i = 0; i < 4; i++){
+                for (int j = 0; j < 3; j++){
+                    Vector2f firePos = *(castle->getCatapults()[i]->getFireballs()[j]->getFirePos());
+                    if (firePos.x != -100 && firePos.y != -100){
+                        for (int k = 0; k < maxEnemies; k++){
+                            if (onagers[k]->getPosition().x > firePos.x - 50 && onagers[k]->getPosition().x < firePos.x + 50 && onagers[k]->getPosition().y > firePos.y - 50 && onagers[k]->getPosition().y < firePos.y + 50){
+                                onagers[k]->setAlive(false);
+                                firePos.x = -100;
+                                firePos.y = -100;
+                            }
+                            if (rams[k]->getPosition().x > firePos.x - 50 && rams[k]->getPosition().x < firePos.x + 50 && rams[k]->getPosition().y > firePos.y - 50 && rams[k]->getPosition().y < firePos.y + 50){
+                                rams[k]->setAlive(false);
+                                firePos.x = -100;
+                                firePos.y = -100;
+                            }
+                        }
+                    }
+                }
+            }
+
             arrow->draw(win);
             for (int i = 0; i < maxEnemies; i++){
                 onagers[i]->draw(win);
