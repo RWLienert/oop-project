@@ -10,7 +10,6 @@ using namespace std;
 
 class Castle : public Entity{
     protected:
-        Vector2f centre;
         Catapult** catapults;
     public:
         Castle(int width, int height,string imgDirectory);

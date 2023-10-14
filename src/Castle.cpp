@@ -43,11 +43,11 @@ void Castle::spawn(int winX, int winY){
     position.x = randX;
     position.y = randY;
     alive = true;
-    centre = Vector2f(randX,randY);
-    catapults[0]->spawn(centre.x-width/2,centre.y-width/2);
-    catapults[1]->spawn(centre.x+width/2,centre.y-width/2);
-    catapults[2]->spawn(centre.x-width/2,centre.y+width/2);
-    catapults[3]->spawn(centre.x+width/2,centre.y+width/2);
+    position = Vector2f(randX,randY);
+    catapults[0]->spawn(position.x-width/2,position.y-width/2);
+    catapults[1]->spawn(position.x+width/2,position.y-width/2);
+    catapults[2]->spawn(position.x-width/2,position.y+width/2);
+    catapults[3]->spawn(position.x+width/2,position.y+width/2);
 }
 
 Catapult** Castle::getCatapults(){
