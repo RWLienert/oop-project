@@ -4,19 +4,9 @@
 
 // create window and objects
 Game::Game(int width, int height,string title){
-    win = new RenderWindow(VideoMode(width,height),title);
+    win = new RenderWindow(VideoMode(width,height),title,Style::Default);
+    mainMenu = new Menu(win->getSize().x, win->getSize().y);
     win->setFramerateLimit(60);
-    castle = new Castle(140,140,"resources/castle.png");
-    arrow = new Arrow("resources/arrow.png");
-    maxEnemies = 10;
-    onagers = new Onager*[maxEnemies];
-    for (int i = 0; i < maxEnemies; i++) {
-        onagers[i] = new Onager(30,30);
-    }
-    rams = new Ram*[maxEnemies];
-    for (int i = 0; i < maxEnemies; i++) {
-        rams[i] = new Ram(30,30, "resources/ram.png");
-    }
 }
 
 // load objects
@@ -65,83 +55,197 @@ void Game::moveCatapult(Vector2f translatedPos, int currentCatapult){
 
 // game loop
 void Game::run(){
-    load();
+    // set background and import textures for other pages
+    RectangleShape background;
+    background.setSize(Vector2f(1300, 800));
+    Texture mainTexture;
+    Texture secondaryTexture;
+    Texture grassTexture;
+    mainTexture.loadFromFile("resources/background.jpg");
+    secondaryTexture.loadFromFile("resources/landscape.jpg");
+    grassTexture.loadFromFile("resources/grass.png");
+    background.setTexture(&mainTexture);
+
+    // define text for instructions
+    Text instructions;
+    Font* font = mainMenu->getFont();
+    instructions.setFont(*font);
+    instructions.setFillColor(Color::Black);
+    instructions.setString("How to Play: \n Defend your castle from the swarms of enemies and \n Survive until the time runs out! You have four lives \n which can be lost if an enemy reaches your castle or \n you get hit by a fireball. Shoot by clicking on a \n catapult, and then moving the cursor. Another click \n will launch it at the enemies! \n \n Can you be the King of the Hill?");
+    instructions.setCharacterSize(35);
+    instructions.setPosition(600,150);
+
+    // defines which page is being selected
+    int page = -1;
+
     clickOn = false;
     Clock clock;
     while (win->isOpen()){
         Time deltaTime = clock.restart();
         Event e;
         while (win->pollEvent(e)){
-            // calculate position
-            int clickCount = 0;
-            Vector2i mousePos = Mouse::getPosition(*win);
-            Vector2f translatedPos = win->mapPixelToCoords(mousePos);
             switch(e.type){
+                // logic for closing window
                 case Event::Closed:
                     win->close();
                     break;
                 case Event::KeyPressed:
-                    if(e.key.code == Keyboard::Escape){
-                        win->close();
+                    if(e.key.code == Keyboard::Escape && page == 0){
+                        page = -1;
+                        background.setTexture(&mainTexture);
+                    }
+                    else if (e.key.code == Keyboard::Escape){
+                       win->close(); 
                     }
                     break;
             }
-            // check for click
-            if (Mouse::isButtonPressed(Mouse::Left)){
-                for (int i = 0; i < 4; i++){
-                    // check whether mouse cursor overlaps a catapult's outline
-                    if (castle->getCatapults()[i]->getSprite()->getGlobalBounds().contains(translatedPos)){
-                        arrow->spawn(castle->getCatapults()[i]->getPivot().x,castle->getCatapults()[i]->getPivot().y);
-                        currentCatapult = i;
-                        clickOn = true;
-                        clickCount++;
-                    }
+
+            // defines keypresses to use the menu
+            if (e.type == Event::KeyReleased){
+                if (e.key.code == Keyboard::Up){
+                    mainMenu->moveUp();
                 }
-                if (clickCount == 0) {
-                    if (clickOn == true){
-                        // Allows the fireball to be fired and to reload the bullets
-                        castle->getCatapults()[currentCatapult]->updateFire(power,startPos,direction);
-                        castle->getCatapults()[currentCatapult]->fire(startPos.x,startPos.y);
-                        if (castle->getCatapults()[currentCatapult]->remaining() <= 0){
-                            castle->getCatapults()[currentCatapult]->reload();
+
+                if (e.key.code == Keyboard::Down){
+                    mainMenu->moveDown();
+                }
+
+                if (e.key.code == Keyboard::Return){
+                    int x = mainMenu->mainMenuPressed();
+
+                    // enters game
+                    if (x == 0){
+                        win->clear();
+                        background.setTexture(&grassTexture);
+                        page = x;
+
+                        // initialise game objects
+                        castle = new Castle(140,140,"resources/castle.png");
+                        arrow = new Arrow("resources/arrow.png");
+                        maxEnemies = 10;
+                        onagers = new Onager*[maxEnemies];
+                        for (int i = 0; i < maxEnemies; i++) {
+                            onagers[i] = new Onager(30,30);
+                        }
+                        rams = new Ram*[maxEnemies];
+                        for (int i = 0; i < maxEnemies; i++) {
+                            rams[i] = new Ram(30,30, "resources/ram.png");
+                        }
+                        
+                        load();
+                    }
+
+                    // enters the high score page
+                    if (x == 1){
+                        background.setTexture(&secondaryTexture);
+                        page = x;
+                    }
+
+                    // enters the instructions page
+                    if (x == 2){
+                        background.setTexture(&secondaryTexture);
+                        page = x;
+                    }
+
+                    // exit program
+                    if (x == 3)
+                        win->close();
+                    break;
+                }
+            }
+            
+            if (page == 0){
+
+                // calculate position
+                int clickCount = 0;
+                Vector2i mousePos = Mouse::getPosition(*win);
+                Vector2f translatedPos = win->mapPixelToCoords(mousePos);
+                switch(e.type){
+                    case Event::Closed:
+                        win->close();
+                        break;
+                    case Event::KeyPressed:
+                        if(e.key.code == Keyboard::Escape){
+                            win->close();
+                        }
+                        break;
+                }
+                // check for click
+                if (Mouse::isButtonPressed(Mouse::Left)){
+                    for (int i = 0; i < 4; i++){
+                        // check whether mouse cursor overlaps a catapult's outline
+                        if (castle->getCatapults()[i]->getSprite()->getGlobalBounds().contains(translatedPos)){
+                            arrow->spawn(castle->getCatapults()[i]->getPivot().x,castle->getCatapults()[i]->getPivot().y);
+                            currentCatapult = i;
+                            clickOn = true;
+                            clickCount++;
                         }
                     }
-                    clickOn = false;
-                    arrow->spawn(-400,-400);
+                    if (clickCount == 0) {
+                        if (clickOn == true){
+                            // Allows the fireball to be fired and to reload the bullets
+                            castle->getCatapults()[currentCatapult]->updateFire(power,startPos,direction);
+                            castle->getCatapults()[currentCatapult]->fire(startPos.x,startPos.y);
+                            if (castle->getCatapults()[currentCatapult]->remaining() <= 0){
+                                castle->getCatapults()[currentCatapult]->reload();
+                            }
+                        }
+                        clickOn = false;
+                        arrow->spawn(-400,-400);
+                    }
+                }
+                moveCatapult(translatedPos, currentCatapult);
+            }
+        }
+
+        if (page != 0){
+            // shows menu until the game is entered
+            win->clear();
+            win->draw(background);
+            mainMenu->draw(*win);
+        }
+
+        // gameloop for the game
+        if (page == 0){
+            win->clear();
+            win->draw(background);
+            castle->draw(win);
+            enemySpawnTimer += deltaTime.asMilliseconds();
+            if (enemySpawnTimer >= enemySpawnInterval && spawnCount < maxEnemies){
+                onagers[spawnCount]->spawn(win->getSize().x, win->getSize().y);
+                rams[spawnCount]->spawn(win->getSize().x, win->getSize().y);
+                enemySpawnTimer = 0.0f; // Reset the timer
+                spawnCount++;
+            }
+
+            // collision code for enemies and castle
+            for (int i = 0; i < maxEnemies; i++){
+                if (onagers[i]->getAlive() == true && onagers[i]->getPosition().x > castle->getPosition().x - 90 && onagers[i]->getPosition().x < castle->getPosition().x + 90 && onagers[i]->getPosition().y > castle->getPosition().y - 90 && onagers[i]->getPosition().y < castle->getPosition().y + 90){
+                    onagers[i]->setAlive(false);
+                }
+                if (rams[i]->getAlive() == true && rams[i]->getPosition().x > castle->getPosition().x - 90 && rams[i]->getPosition().x < castle->getPosition().x + 90 && rams[i]->getPosition().y > castle->getPosition().y - 90 && rams[i]->getPosition().y < castle->getPosition().y + 90){
+                    rams[i]->setAlive(false);
                 }
             }
-            moveCatapult(translatedPos, currentCatapult);
-        }
-        win->clear(Color(42,120,59));
-        castle->draw(win);
-        enemySpawnTimer += deltaTime.asMilliseconds();
-        if (enemySpawnTimer >= enemySpawnInterval && spawnCount < maxEnemies){
-            onagers[spawnCount]->spawn(win->getSize().x, win->getSize().y);
-            rams[spawnCount]->spawn(win->getSize().x, win->getSize().y);
-            enemySpawnTimer = 0.0f; // Reset the timer
-            spawnCount++;
-        }
 
-        for (int i = 0; i < maxEnemies; i++){
-            if (onagers[i]->getAlive() == true && onagers[i]->getPosition().x > castle->getPosition().x - 90 && onagers[i]->getPosition().x < castle->getPosition().x + 90 && onagers[i]->getPosition().y > castle->getPosition().y - 90 && onagers[i]->getPosition().y < castle->getPosition().y + 90){
-                onagers[i]->setAlive(false);
-            }
-            if (rams[i]->getAlive() == true && rams[i]->getPosition().x > castle->getPosition().x - 90 && rams[i]->getPosition().x < castle->getPosition().x + 90 && rams[i]->getPosition().y > castle->getPosition().y - 90 && rams[i]->getPosition().y < castle->getPosition().y + 90){
-                rams[i]->setAlive(false);
+            arrow->draw(win);
+            for (int i = 0; i < maxEnemies; i++){
+                onagers[i]->draw(win);
+                rams[i]->draw(win);
             }
         }
 
-        arrow->draw(win);
-        for (int i = 0; i < maxEnemies; i++){
-            onagers[i]->draw(win);
-            rams[i]->draw(win);
+        if (page == 2){
+            win->draw(instructions);
         }
+
         win->display();
     }
 }
 
 Game::~Game(){
     delete win;
+    delete mainMenu;
     delete castle;
     delete arrow;
 }

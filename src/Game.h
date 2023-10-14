@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <SFML/Graphics.hpp>
+#include "Menu.h"
 #include "Castle.h"
 #include "Arrow.h"
 #include "Onager.h"
@@ -14,6 +15,7 @@ using namespace std;
 class Game{
     protected:
         RenderWindow* win;
+        Menu* mainMenu;
         Castle* castle;
         Arrow* arrow;
         Onager** onagers;
@@ -33,7 +35,6 @@ class Game{
         void load();
         void run();
         void moveCatapult(Vector2f translatedPos, int currentCatapult);
-        
         ~Game();
 };
 
