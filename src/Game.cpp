@@ -68,12 +68,30 @@ void Game::run(){
 
     // define text for instructions
     Text instructions;
+    Text level;
+    Text kills;
+    Text time;
     Font* font = mainMenu->getFont();
     instructions.setFont(*font);
     instructions.setFillColor(Color::Black);
     instructions.setString("How to Play: \n Defend your castle from the swarms of enemies and \n Survive until the time runs out! You have four lives \n which can be lost if an enemy reaches your castle or \n you get hit by a fireball. Shoot by clicking on a \n catapult, and then moving the cursor. Another click \n will launch it at the enemies! \n \n Can you be the King of the Hill?");
     instructions.setCharacterSize(35);
     instructions.setPosition(600,150);
+    level.setFont(*font);
+    level.setFillColor(Color(204, 204, 188));
+    level.setString("Level: 1");
+    level.setCharacterSize(45);
+    level.setPosition(10,10);
+    kills.setFont(*font);
+    kills.setFillColor(Color(204, 204, 188));
+    kills.setString("Kills: 0");
+    kills.setCharacterSize(45);
+    kills.setPosition(10,50);
+    time.setFont(*font);
+    time.setFillColor(Color(204, 204, 188));
+    time.setString("Time: 50");
+    time.setCharacterSize(45);
+    time.setPosition(10,90);
 
     // defines which page is being selected
     int page = -1;
@@ -209,6 +227,9 @@ void Game::run(){
         if (page == 0){
             win->clear();
             win->draw(background);
+            win->draw(level);
+            win->draw(kills);
+            win->draw(time);
             castle->draw(win);
             enemySpawnTimer += deltaTime.asMilliseconds();
             if (enemySpawnTimer >= enemySpawnInterval && spawnCount < maxEnemies){
