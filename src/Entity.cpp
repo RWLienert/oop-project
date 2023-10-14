@@ -19,3 +19,7 @@ bool Entity::getAlive(){
 Vector2f Entity::getPosition(){
     return position;
 }
+
+Vector2f* Entity::getFirePos(){
+    return &firePos;
+}

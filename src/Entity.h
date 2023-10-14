@@ -11,6 +11,7 @@ class Entity{
         Texture* texture;
         Sprite* sprite;
         Vector2f position;
+        Vector2f firePos;
         bool alive;
         int width;
         int height;
@@ -21,6 +22,7 @@ class Entity{
         void setAlive(bool alive);
         bool getAlive();
         Vector2f getPosition();
+        Vector2f* getFirePos();
 };
 
 #endif
