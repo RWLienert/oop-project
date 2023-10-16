@@ -23,3 +23,7 @@ Vector2f Entity::getPosition(){
 Vector2f* Entity::getFirePos(){
     return &firePos;
 }
+
+void Entity::setFirePos(Vector2f firePos){
+    this->firePos = firePos;
+}

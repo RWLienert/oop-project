@@ -23,6 +23,7 @@ class Entity{
         bool getAlive();
         Vector2f getPosition();
         Vector2f* getFirePos();
+        void setFirePos(Vector2f firePos);
 };
 
 #endif
