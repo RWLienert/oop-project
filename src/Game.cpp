@@ -1,6 +1,7 @@
 #include "Game.h"
 #include <cmath>
 #include <SFML/System/Clock.hpp>
+#include <sstream>
 
 // create window and objects
 Game::Game(int width, int height,string title){
@@ -53,6 +54,12 @@ void Game::moveCatapult(Vector2f translatedPos, int currentCatapult){
     }
 }
 
+template <typename T, typename U> string toString(T text, U arg){
+    stringstream ss;
+    ss << text << arg;
+    return ss.str();
+}
+
 // game loop
 void Game::run(){
     // set background and import textures for other pages
@@ -71,6 +78,8 @@ void Game::run(){
     Text level;
     Text kills;
     Text time;
+    Text lives;
+    Text end;
     Font* font = mainMenu->getFont();
     instructions.setFont(*font);
     instructions.setFillColor(Color::Black);
@@ -92,6 +101,16 @@ void Game::run(){
     time.setString("Time: 50");
     time.setCharacterSize(45);
     time.setPosition(10,90);
+    lives.setFont(*font);
+    lives.setFillColor(Color(204, 204, 188));
+    lives.setString("Lives: 4");
+    lives.setCharacterSize(45);
+    lives.setPosition(10,130);
+    end.setFont(*font);
+    end.setFillColor(Color(204, 204, 188));
+    end.setString("GAME OVER!");
+    end.setCharacterSize(45);
+    end.setPosition(800,240);
 
     // defines which page is being selected
     int page = -1;
@@ -134,6 +153,13 @@ void Game::run(){
                     // enters game
                     if (x == 0){
                         win->clear();
+                        gameOver = false;
+                        clickOn = false;
+                        Lives = 4;
+                        Kills = 0;
+                        level.setPosition(10,10);
+                        kills.setPosition(10,50);
+                        deltaTime = clock.restart();
                         background.setTexture(&grassTexture);
                         page = x;
 
@@ -221,16 +247,20 @@ void Game::run(){
             win->clear();
             win->draw(background);
             mainMenu->draw(*win);
+
+            if (gameOver == true && page == -1){
+                win->draw(end);
+                level.setPosition(850,310);
+                kills.setPosition(850,350);
+                win->draw(level);
+                win->draw(kills);
+            }
         }
 
         // gameloop for the game
         if (page == 0){
             win->clear();
             win->draw(background);
-            win->draw(level);
-            win->draw(kills);
-            win->draw(time);
-            castle->draw(win);
             enemySpawnTimer += deltaTime.asMilliseconds();
             if (enemySpawnTimer >= enemySpawnInterval && spawnCount < maxEnemies){
                 onagers[spawnCount]->spawn(win->getSize().x, win->getSize().y);
@@ -253,11 +283,14 @@ void Game::run(){
 
             // collision code for enemies and castle
             for (int i = 0; i < maxEnemies; i++){
-                if (onagers[i]->getAlive() == true && onagers[i]->getPosition().x > castle->getPosition().x - 90 && onagers[i]->getPosition().x < castle->getPosition().x + 90 && onagers[i]->getPosition().y > castle->getPosition().y - 90 && onagers[i]->getPosition().y < castle->getPosition().y + 90){
+                int space = 105;
+                if (onagers[i]->getAlive() == true && onagers[i]->getPosition().x > castle->getPosition().x - space && onagers[i]->getPosition().x < castle->getPosition().x + space && onagers[i]->getPosition().y > castle->getPosition().y - space && onagers[i]->getPosition().y < castle->getPosition().y + space){
                     onagers[i]->setAlive(false);
+                    Lives -= 1;
                 }
-                if (rams[i]->getAlive() == true && rams[i]->getPosition().x > castle->getPosition().x - 90 && rams[i]->getPosition().x < castle->getPosition().x + 90 && rams[i]->getPosition().y > castle->getPosition().y - 90 && rams[i]->getPosition().y < castle->getPosition().y + 90){
+                if (rams[i]->getAlive() == true && rams[i]->getPosition().x > castle->getPosition().x - space && rams[i]->getPosition().x < castle->getPosition().x + space && rams[i]->getPosition().y > castle->getPosition().y - space && rams[i]->getPosition().y < castle->getPosition().y + space){
                     rams[i]->setAlive(false);
+                    Lives -= 1;
                 }
             }
 
@@ -269,9 +302,11 @@ void Game::run(){
                         for (int k = 0; k < maxEnemies; k++){
                             if (onagers[k]->getPosition().x > firePos.x - 50 && onagers[k]->getPosition().x < firePos.x + 50 && onagers[k]->getPosition().y > firePos.y - 50 && onagers[k]->getPosition().y < firePos.y + 50){
                                 onagers[k]->setAlive(false);
+                                Kills++;
                             }
                             if (rams[k]->getPosition().x > firePos.x - 50 && rams[k]->getPosition().x < firePos.x + 50 && rams[k]->getPosition().y > firePos.y - 50 && rams[k]->getPosition().y < firePos.y + 50){
                                 rams[k]->setAlive(false);
+                                Kills++;
                             }
                         }
                         firePos.x = -100;
@@ -281,11 +316,24 @@ void Game::run(){
                 }
             }
 
-            arrow->draw(win);
             for (int i = 0; i < maxEnemies; i++){
                 onagers[i]->draw(win);
                 rams[i]->draw(win);
             }
+            win->draw(level);
+            win->draw(kills);
+            win->draw(time);
+            if (Lives <= 0){
+                gameOver = true;
+                page = -1;
+                background.setTexture(&grassTexture);
+            }
+            lives.setString(toString<string,int>("Lives: ", Lives));
+            kills.setString(toString<string,int>("Kills: ", Kills));
+            win->draw(lives);
+
+            castle->draw(win);
+            arrow->draw(win);
         }
 
         if (page == 2){
@@ -295,6 +343,9 @@ void Game::run(){
         win->display();
     }
 }
+
+int Game::Lives = 4;
+int Game::Kills = 0;
 
 Game::~Game(){
     delete win;

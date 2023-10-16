@@ -25,11 +25,13 @@ class Game{
         Vector2f startPos;
         Vector2f direction;
         float power;
-        int lives;
+        static int Lives;
+        static int Kills;
+        bool gameOver;
         int maxEnemies;
         int spawnCount;
         float enemySpawnTimer;
-        float enemySpawnInterval = 2000;
+        float enemySpawnInterval = 5000;
     public:
         Game(int width, int height, string title);
         void load();
