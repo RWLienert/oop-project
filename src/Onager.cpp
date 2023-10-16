@@ -1,28 +1,34 @@
 #include "Onager.h"
 
-Onager::Onager(int width, int height){
+Onager::Onager(int width, int height, string imgDirectory){
     this->width = width;
     this->height = height;
-    body = new RectangleShape(Vector2f(30.f,30.f));
-    body->setOrigin(15.f,15.f);
-    body->setFillColor(Color(132, 138, 133));
-    body->setPosition(-100,-100);
+    texture = new Texture();
+    sprite = new Sprite();
+    if (!texture->loadFromFile(imgDirectory)){
+        cout << "Onager sprite was unable to load" << endl;
+    }
+    texture->setSmooth(true);
+    sprite->setTexture(*texture);
+    sprite->setOrigin(width/2,height/2);
+    sprite->scale(1.4,1.4);
+
     alive = false;
     srand(time(NULL));
 }
 
 void Onager::draw(RenderWindow* win){
     if (alive == true){
-        win->draw(*body);
-        position = Vector2f(body->getPosition().x, body->getPosition().y);
+        win->draw(*sprite);
+        position = Vector2f(sprite->getPosition().x, sprite->getPosition().y);
     }
 }
 
 void Onager::spawn(int winX, int winY){
     int onagerRandX = rand() % (winX - 20);
     int onagerRandY = rand() % (winY - 20);
-    body->setPosition(static_cast<float>(onagerRandX), static_cast<float>(onagerRandY));
-    position = Vector2f(body->getPosition().x, body->getPosition().y);
+    sprite->setPosition(static_cast<float>(onagerRandX), static_cast<float>(onagerRandY));
+    position = Vector2f(sprite->getPosition().x, sprite->getPosition().y);
     alive = true;
 }
 
@@ -35,11 +41,11 @@ void Onager::movePath(Vector2f castlePosition){
     direction.x /= length;
     direction.y /= length;
     speed = 5;
-    body->move(direction.x/speed, direction.y/speed);
-    position = Vector2f(body->getPosition().x, body->getPosition().y);
+    sprite->move(direction.x/speed, direction.y/speed);
+    position = Vector2f(sprite->getPosition().x, sprite->getPosition().y);
 
 }
 
 Onager::~Onager(){
-    delete body;
+    delete sprite;
 }
