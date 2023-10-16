@@ -15,6 +15,7 @@ class Menu{
         static const int maxMainMenu = 4;
         Font font;
         Text MainMenu[maxMainMenu];
+        Text navigate;
     public:
         Menu(float width, float height);
         void draw(RenderWindow& window);

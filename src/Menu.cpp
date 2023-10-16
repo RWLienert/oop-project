@@ -30,6 +30,12 @@ Menu::Menu(float width, float height){
     MainMenu[3].setCharacterSize(70);
     MainMenu[3].setPosition(200,400);
 
+    navigate.setFont(font);
+    navigate.setFillColor(Color(204, 204, 188));
+    navigate.setString("Press Up & Down Keys to Navigate");
+    navigate.setCharacterSize(35);
+    navigate.setPosition(20,730);
+
 
     mainMenuSelected = -1;
 }
@@ -38,9 +44,10 @@ Menu::~Menu(){
 }
 
 //Draw MainMenu
-void Menu::draw(RenderWindow& window){
+void Menu::draw(RenderWindow& win){
     for (int i = 0; i < maxMainMenu; ++i){
-        window.draw(MainMenu[i]);
+        win.draw(MainMenu[i]);
+        win.draw(navigate);
     }
 }
 
