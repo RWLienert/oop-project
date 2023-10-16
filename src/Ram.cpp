@@ -1,12 +1,13 @@
 #include "Ram.h"
 
 Ram::Ram(int width, int height, string imgDirectory){
+    // initialise sprite and positioning
     this->width = width;
     this->height = height;
     texture = new Texture();
     sprite = new Sprite();
     if (!texture->loadFromFile(imgDirectory)){
-        cout << "ram sprite was unable to load" << endl;
+        cout << "Ram sprite was unable to load" << endl;
     }
     texture->setSmooth(true);
     sprite->setTexture(*texture);
@@ -25,6 +26,7 @@ void Ram::draw(RenderWindow* win){
 }
 
 void Ram::spawn(int winX, int winY){
+    // spawns ram randomly outside of the window
     int side = rand() % 4;
 
     int ramRandX, ramRandY;
@@ -53,6 +55,7 @@ void Ram::spawn(int winX, int winY){
 }
 
 void Ram::movePath(Vector2f castlePosition){
+    // calculates required direction of movement
     this->castlePosition = castlePosition;
     Vector2f direction;
     direction.x = castlePosition.x - position.x;
@@ -65,8 +68,8 @@ void Ram::movePath(Vector2f castlePosition){
     sprite->move(direction.x/speed, direction.y/speed);
     position = Vector2f(sprite->getPosition().x, sprite->getPosition().y);
 
+    // rotates the sprite towards castle
     float angleRadians = atan2(direction.y, direction.x);
-
     float angleDegrees = (angleRadians * 180 / 3.14159265)+180;
 
     sprite->setRotation(angleDegrees);
