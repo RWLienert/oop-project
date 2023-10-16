@@ -25,9 +25,28 @@ void Ram::draw(RenderWindow* win){
 }
 
 void Ram::spawn(int winX, int winY){
-    int ramRandX = rand() % (winX - 20);
-    int ramRandY = rand() % (winY - 20);
-    sprite->rotate(-50);
+    int side = rand() % 4;
+
+    int ramRandX, ramRandY;
+    switch (side) {
+        case 0:
+            ramRandX = rand() % winX;
+            ramRandY = -50;
+            break;
+        case 1:
+            ramRandX = winX + 50;
+            ramRandY = rand() % winY;
+            break;
+        case 2:
+            ramRandX = rand() % winX;
+            ramRandY = winY + 50;
+            break;
+        case 3:
+            ramRandX = -50;
+            ramRandY = rand() % winY;
+            break;
+    }
+
     sprite->setPosition(static_cast<float>(ramRandX), static_cast<float>(ramRandY));
     position = Vector2f(sprite->getPosition().x, sprite->getPosition().y);
     alive = true;
@@ -45,6 +64,12 @@ void Ram::movePath(Vector2f castlePosition){
     speed = 4;
     sprite->move(direction.x/speed, direction.y/speed);
     position = Vector2f(sprite->getPosition().x, sprite->getPosition().y);
+
+    float angleRadians = atan2(direction.y, direction.x);
+
+    float angleDegrees = (angleRadians * 180 / 3.14159265)+180;
+
+    sprite->setRotation(angleDegrees);
 
 }
 
