@@ -2,6 +2,7 @@
 #include <cmath>
 
 Fireball::Fireball(string imgDirectory){
+    // assign sprite and positioning
     texture = new Texture();
     sprite = new Sprite();
     if (!texture->loadFromFile(imgDirectory)){
@@ -16,13 +17,18 @@ Fireball::Fireball(string imgDirectory){
 }
 
 void Fireball::move(float power, Vector2f startPos, Vector2f direction){
+    // distance travelled of the fireball
     float travelledDistance = sqrt(pow(sprite->getPosition().x-startPos.x,2)+pow(sprite->getPosition().y-startPos.y,2));
+    // assigns power
     float distanceScale = 2.5;
+    // assigns size of image
     float imgScale = 1;
     if (travelledDistance < distanceScale*power){
+        // calculates the required change in coordinates to move the fireball
         float changeX = speed*-direction.x;
         float changeY = speed*-direction.y;
         sprite->move(changeX,changeY);
+        // for majority of the path, the image increases in scale followed by a decrease
         if (travelledDistance < 2*(distanceScale*power)/3){
             imgScale += 0.005;
             sprite->scale(imgScale,imgScale);
@@ -33,6 +39,7 @@ void Fireball::move(float power, Vector2f startPos, Vector2f direction){
         }
     }
     else{
+        // assigns fireball position to calculate collision and removes the image once the path has been completed
         firePos = Vector2f(sprite->getPosition().x,sprite->getPosition().y);
         alive = false;
     }
