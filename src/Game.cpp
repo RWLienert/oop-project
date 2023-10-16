@@ -143,11 +143,11 @@ void Game::run(){
                         maxEnemies = 10;
                         onagers = new Onager*[maxEnemies];
                         for (int i = 0; i < maxEnemies; i++) {
-                            onagers[i] = new Onager(30,30);
+                            onagers[i] = new Onager(40,40,"resources/onager.png");
                         }
                         rams = new Ram*[maxEnemies];
                         for (int i = 0; i < maxEnemies; i++) {
-                            rams[i] = new Ram(30,30, "resources/ram.png");
+                            rams[i] = new Ram(50,30, "resources/ram.png");
                         }
                         
                         load();
@@ -269,15 +269,14 @@ void Game::run(){
                         for (int k = 0; k < maxEnemies; k++){
                             if (onagers[k]->getPosition().x > firePos.x - 50 && onagers[k]->getPosition().x < firePos.x + 50 && onagers[k]->getPosition().y > firePos.y - 50 && onagers[k]->getPosition().y < firePos.y + 50){
                                 onagers[k]->setAlive(false);
-                                firePos.x = -100;
-                                firePos.y = -100;
                             }
                             if (rams[k]->getPosition().x > firePos.x - 50 && rams[k]->getPosition().x < firePos.x + 50 && rams[k]->getPosition().y > firePos.y - 50 && rams[k]->getPosition().y < firePos.y + 50){
                                 rams[k]->setAlive(false);
-                                firePos.x = -100;
-                                firePos.y = -100;
                             }
                         }
+                        firePos.x = -100;
+                        firePos.y = -100;
+                        castle->getCatapults()[i]->getFireballs()[j]->setFirePos(firePos);
                     }
                 }
             }
