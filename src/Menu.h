@@ -1,5 +1,8 @@
+// This class is responsible for constructing the menu. It has 4 pages with member functions to navigate the menu using the up and down keys. It also defines the text and styling
+
 #ifndef MENU_H
 #define MENU_H
+
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <iostream>

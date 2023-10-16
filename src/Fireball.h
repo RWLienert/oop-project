@@ -1,3 +1,5 @@
+// The fireball class defines the ammo of each catapult denoted as fireballs and defines how they move and are drawn to the screen
+
 #ifndef FIREBALL_H
 #define FIREBALL_H
 

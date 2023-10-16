@@ -1,3 +1,5 @@
+// This class takes care of the power meter or 'arrow' that dictates how far each catapult will fire their fireballs. It includes information about its sprite and shape
+
 #ifndef ARROW_H
 #define ARROW_H
 

@@ -1,3 +1,5 @@
+// The onager class defines an inhereted class that is of type enemy. It has functions to draw and spawn the enemy as well as define how it will move
+
 #ifndef ONAGER_H
 #define ONAGER_H
 

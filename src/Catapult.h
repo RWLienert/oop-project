@@ -1,3 +1,5 @@
+// The catapult class defines each catapult and has functions to fire their array of fireballs. It broadly defines how the catapults are to be drawn, spawned and fired.
+
 #ifndef CATAPULT_H
 #define CATAPULT_H
 

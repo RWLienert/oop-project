@@ -1,3 +1,5 @@
+// Entity is a base class (abstract) that defines functions used to create each game object. It provides variables such as the sprite, texture and positioning as well as getters and setters to adjust these values. 
+
 #ifndef ENTITY_H
 #define ENTITY_H
 

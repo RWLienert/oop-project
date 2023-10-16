@@ -1,3 +1,5 @@
+// The castle class defines the creation of the castle and is used to generate an array of catapults. This is in essence the user's character. It provides functions to create this object and obtain its values.
+
 #ifndef CASTLE_H
 #define CASTLE_H
 

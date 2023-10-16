@@ -1,3 +1,5 @@
+// This class is responsible for running the main game code. It handles all of the screen text, game objects and the loop that runs within the program.
+
 #ifndef GAME_H
 #define GAME_H
 
