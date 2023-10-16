@@ -4,6 +4,7 @@
 using namespace std;
 
 Onager::Onager(int width, int height, string imgDirectory){
+    // initialise sprite and positioning
     this->width = width;
     this->height = height;
     texture = new Texture();
@@ -19,24 +20,6 @@ Onager::Onager(int width, int height, string imgDirectory){
     srand(time(NULL));
 }
 
-void Onager::movePath(Vector2f castlePosition){
-    this->castlePosition = castlePosition;
-    Vector2f direction;
-    direction.x = castlePosition.x- position.x;
-    direction.y = castlePosition.y - position.y;
-    float length = sqrt(direction.x * direction.x + direction.y * direction.y);
-    if (length > 300) {
-        direction.x /= length;
-        direction.y /= length;
-        speed = 5;
-        sprite->move(direction.x / speed, direction.y / speed);
-        position = Vector2f(sprite->getPosition().x, sprite->getPosition().y);
-    }
-    float angleRadians = atan2(direction.y, direction.x);
-    float angleDegrees = (angleRadians * 180 / 3.14159265)+180;
-    sprite->setRotation(angleDegrees);
-
-}
 void Onager::draw(RenderWindow* win){
     if (alive == true){
         win->draw(*sprite);
@@ -45,6 +28,7 @@ void Onager::draw(RenderWindow* win){
 }
 
 void Onager::spawn(int winX, int winY){
+    // spawns randomly outside of the window
     int side = rand() % 4;
 
     int onagerRandX, onagerRandY;
@@ -70,6 +54,30 @@ void Onager::spawn(int winX, int winY){
     sprite->setPosition(static_cast<float>(onagerRandX), static_cast<float>(onagerRandY));
     position = Vector2f(sprite->getPosition().x, sprite->getPosition().y);
     alive = true;
+}
+
+void Onager::movePath(Vector2f castlePosition){
+    // calculates required direction of movement
+    this->castlePosition = castlePosition;
+    Vector2f direction;
+    direction.x = castlePosition.x- position.x;
+    direction.y = castlePosition.y - position.y;
+    float length = sqrt(direction.x * direction.x + direction.y * direction.y);
+
+    // stops when it gets 300 pixels from the castle
+    if (length > 300) {
+        direction.x /= length;
+        direction.y /= length;
+        speed = 5;
+        sprite->move(direction.x / speed, direction.y / speed);
+        position = Vector2f(sprite->getPosition().x, sprite->getPosition().y);
+    }
+
+    // rotates sprite towards castle
+    float angleRadians = atan2(direction.y, direction.x);
+    float angleDegrees = (angleRadians * 180 / 3.14159265)+180;
+    sprite->setRotation(angleDegrees);
+
 }
 
 Onager::~Onager(){
