@@ -182,6 +182,7 @@ void Game::run(){
                         time.setPosition(10,90);
                         time.setFillColor(Color(204, 204, 188));
                         deltaTime = clock.restart();
+                        countdown = 61;
                         background.setTexture(&grassTexture);
                         page = x;
 
