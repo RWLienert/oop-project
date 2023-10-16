@@ -13,12 +13,12 @@ class Catapult : public Entity{
     protected:
         Vector2f pivot;
         Vector2f end;
-        Vector2f startPos;
-        Vector2f direction;
+        Vector2f startPos[3];
+        Vector2f direction[3];
         Fireball** fireballs;
         int numBalls;
         int remainingBalls;
-        float power;
+        float power[3];
     public:
         Catapult(int width, int height, string imgDirectory, int numBalls);
         void spawn(int cornerX, int cornerY);
