@@ -54,6 +54,7 @@ void Game::moveCatapult(Vector2f translatedPos, int currentCatapult){
     }
 }
 
+// Utilised to concatenate variables together to print them on the screen
 template <typename T, typename U> string toString(T text, U arg){
     stringstream ss;
     ss << text << arg;
@@ -73,8 +74,9 @@ void Game::run(){
     grassTexture.loadFromFile("resources/grass.png");
     background.setTexture(&mainTexture);
 
-    // define text for instructions
+    // define text for game
     Text instructions;
+    Text highscore;
     Text level;
     Text kills;
     Text time;
@@ -86,6 +88,11 @@ void Game::run(){
     instructions.setString("How to Play: \n Defend your castle from the swarms of enemies and \n Survive until the time runs out! You have four lives \n which can be lost if an enemy reaches your castle or \n you get hit by a fireball. Shoot by clicking on a \n catapult, and then moving the cursor. Another click \n will launch it at the enemies! \n \n Can you be the King of the Hill?");
     instructions.setCharacterSize(35);
     instructions.setPosition(600,150);
+    highscore.setFont(*font);
+    highscore.setFillColor(Color::Black);
+    highscore.setString("Current Max:");
+    highscore.setCharacterSize(50);
+    highscore.setPosition(800,240);
     level.setFont(*font);
     level.setFillColor(Color(204, 204, 188));
     level.setString("Level: 1");
@@ -115,8 +122,17 @@ void Game::run(){
     // defines which page is being selected
     int page = -1;
 
-    clickOn = false;
+    // initialise the score variables
+    bool scoreRead = false;
+    int highLevel, lowTime, maxKilled;
+
+    // initialise the timer
+    int countdown = 61;
+
     Clock clock;
+    Clock clock2;
+    Time elapsed;
+    clickOn = false;
     while (win->isOpen()){
         Time deltaTime = clock.restart();
         Event e;
@@ -150,15 +166,21 @@ void Game::run(){
                 if (e.key.code == Keyboard::Return){
                     int x = mainMenu->mainMenuPressed();
 
-                    // enters game
+                    // enters game from menu
                     if (x == 0){
+                        // clear variables and environment
                         win->clear();
                         gameOver = false;
                         clickOn = false;
+                        Level = 1;
                         Lives = 4;
                         Kills = 0;
                         level.setPosition(10,10);
+                        level.setFillColor(Color(204, 204, 188));
                         kills.setPosition(10,50);
+                        kills.setFillColor(Color(204, 204, 188));
+                        time.setPosition(10,90);
+                        time.setFillColor(Color(204, 204, 188));
                         deltaTime = clock.restart();
                         background.setTexture(&grassTexture);
                         page = x;
@@ -166,7 +188,6 @@ void Game::run(){
                         // initialise game objects
                         castle = new Castle(140,140,"resources/castle.png");
                         arrow = new Arrow("resources/arrow.png");
-                        maxEnemies = 10;
                         onagers = new Onager*[maxEnemies];
                         for (int i = 0; i < maxEnemies; i++) {
                             onagers[i] = new Onager(40,40,"resources/onager.png");
@@ -198,8 +219,8 @@ void Game::run(){
                 }
             }
             
+            // Logic for shooting
             if (page == 0){
-
                 // calculate position
                 int clickCount = 0;
                 Vector2i mousePos = Mouse::getPosition(*win);
@@ -251,16 +272,53 @@ void Game::run(){
             if (gameOver == true && page == -1){
                 win->draw(end);
                 level.setPosition(850,310);
-                kills.setPosition(850,350);
+                time.setPosition(850,350);
+                kills.setPosition(850,390);
                 win->draw(level);
+                win->draw(time);
                 win->draw(kills);
             }
         }
 
         // gameloop for the game
         if (page == 0){
+            // runs clock countdown
+            elapsed = clock2.getElapsedTime();
+            if (elapsed.asSeconds() >= 1){
+                countdown--;
+                clock2.restart();
+            }
+            if (countdown == 0){
+                // reset window for new level
+                Level++;
+                clock2.restart();
+                countdown = 60;
+                maxEnemies += 1;
+                enemySpawnInterval -= 200;
+
+                win->clear();
+                clickOn = false;
+                deltaTime = clock.restart();
+                background.setTexture(&grassTexture);
+
+                // initialise game objects
+                arrow = new Arrow("resources/arrow.png");
+                maxEnemies = 10;
+                onagers = new Onager*[maxEnemies];
+                for (int i = 0; i < maxEnemies; i++) {
+                    onagers[i] = new Onager(40,40,"resources/onager.png");
+                }
+                rams = new Ram*[maxEnemies];
+                for (int i = 0; i < maxEnemies; i++) {
+                    rams[i] = new Ram(50,30, "resources/ram.png");
+                }
+                spawnCount = 0;
+            }
+
             win->clear();
             win->draw(background);
+
+            // incrementally add enemies to page
             enemySpawnTimer += deltaTime.asMilliseconds();
             if (enemySpawnTimer >= enemySpawnInterval && spawnCount < maxEnemies){
                 onagers[spawnCount]->spawn(win->getSize().x, win->getSize().y);
@@ -270,7 +328,6 @@ void Game::run(){
             }
 
             // enemy movement
-
             Vector2f castlePos = castle->getPosition();
             for (int i = 0; i < maxEnemies; i++){
                 if (onagers[i]->getAlive() == true){
@@ -316,6 +373,7 @@ void Game::run(){
                 }
             }
 
+            // draw objects
             for (int i = 0; i < maxEnemies; i++){
                 onagers[i]->draw(win);
                 rams[i]->draw(win);
@@ -323,17 +381,71 @@ void Game::run(){
             win->draw(level);
             win->draw(kills);
             win->draw(time);
+
+            // logic for game over
             if (Lives <= 0){
                 gameOver = true;
                 page = -1;
                 background.setTexture(&grassTexture);
+
+                ifstream readFile;
+                readFile.open("resources/highscore.txt");
+
+                if (readFile.is_open()){
+                    readFile >> highLevel >> lowTime >> maxKilled;
+                }
+                readFile.close();
+
+                ofstream writeFile("resources/highscore.txt");
+                
+                if (writeFile.is_open()){
+                    if (Level > highLevel || (Level == highLevel && countdown < lowTime)){
+                        writeFile << Level << " " << countdown << " " << Kills;
+                    }
+                }
             }
-            lives.setString(toString<string,int>("Lives: ", Lives));
+
+            // print stats to window
+            level.setString(toString<string,int>("Level: ", Level));
             kills.setString(toString<string,int>("Kills: ", Kills));
+            time.setString(toString<string,int>("Time: ", countdown));
+            lives.setString(toString<string,int>("Lives: ", Lives));
             win->draw(lives);
 
             castle->draw(win);
             arrow->draw(win);
+        }
+
+        // highscore page logic
+        if (page == 1){
+            if (scoreRead == false){
+                ifstream readFile;
+                readFile.open("resources/highscore.txt");
+
+                if (readFile.is_open()){
+                    readFile >> highLevel >> lowTime >> maxKilled;
+                }
+                readFile.close();
+                scoreRead = true;
+            }
+
+            // load and adjust text
+            level.setPosition(850,310);
+            time.setPosition(850,350);
+            kills.setPosition(850,390);
+            level.setFillColor(Color(105, 80, 78));
+            kills.setFillColor(Color(105, 80, 78));
+            time.setFillColor(Color(105, 80, 78));
+            level.setString(toString<string,int>("Level: ", highLevel));
+            time.setString(toString<string,int>("Time: ", lowTime));
+            kills.setString(toString<string,int>("Kills: ", maxKilled));
+            win->draw(level);
+            win->draw(time);
+            win->draw(kills);
+            win->draw(highscore);
+        }
+        else{
+            scoreRead = false;
         }
 
         if (page == 2){
@@ -344,8 +456,12 @@ void Game::run(){
     }
 }
 
+// initialise static variables
+float Game::enemySpawnInterval = 5000;
+int Game::maxEnemies = 8;
 int Game::Lives = 4;
 int Game::Kills = 0;
+int Game::Level = 1;
 
 Game::~Game(){
     delete win;

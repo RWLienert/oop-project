@@ -9,6 +9,7 @@
 #include "Ram.h"
 #include <iostream>
 #include <string>
+#include <fstream>
 using namespace sf;
 using namespace std;
 
@@ -27,11 +28,12 @@ class Game{
         float power;
         static int Lives;
         static int Kills;
+        static int Level;
         bool gameOver;
-        int maxEnemies;
+        static int maxEnemies;
         int spawnCount;
         float enemySpawnTimer;
-        float enemySpawnInterval = 5000;
+        static float enemySpawnInterval;
     public:
         Game(int width, int height, string title);
         void load();
