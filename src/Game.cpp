@@ -202,7 +202,8 @@ void Game::run(){
                         }
                         
                         load();
-                        unitTest.runObjectTests(win,castle,arrow,onagers,maxEnemies);
+                        unitTest.runObjectTests(win,castle,arrow,onagers,rams,maxEnemies);
+                        unitTest.runStatTests(Level, Kills, page, countdown);
                     }
 
                     // enters the high score page

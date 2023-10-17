@@ -51,12 +51,43 @@ class UnitTest {
             }
         }
 
+        void testLevel(int Level){
+            if (Level != 1){
+                cout << "Level has been initialised incorrectly" << endl;
+            }
+        }
+
+        void testKills(int Kills){
+            if (Kills != 0){
+                cout << "Kills has been initialised incorrectly" << endl;
+            }
+        }
+
+        void testPage(int page){
+            if (page != 0){
+                cout << "Pages have been initialised incorrectly" << endl;
+            }
+        }
+
+        void testCountdown(int countdown){
+            if (countdown < 0 || countdown > 61){
+                cout << "The clock timer has been initialised incorrectly" << endl;
+            }
+        }
+
     public:
         void runObjectTests(Window* win, Castle* castle, Arrow* arrow, Onager** onagers, Ram** rams, int maxEnemies){
             testCastle(win, castle);
             testArrow(win, arrow);
             testOnagers(win,onagers,maxEnemies);
             testRams(win,rams,maxEnemies);
+        }
+
+        void runStatTests(int Level, int Kills, int page, int countdown){
+            testLevel(Level);
+            testKills(Kills);
+            testPage(page);
+            testCountdown(countdown);
         }
 };
 
