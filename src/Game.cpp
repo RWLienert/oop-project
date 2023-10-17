@@ -202,7 +202,7 @@ void Game::run(){
                         }
                         
                         load();
-                        unitTest.runTests(win,castle);
+                        unitTest.runObjectTests(win,castle,arrow,onagers,maxEnemies);
                     }
 
                     // enters the high score page
@@ -413,6 +413,7 @@ void Game::run(){
                 page = -1;
                 background.setTexture(&grassTexture);
 
+                // open file and get variables
                 ifstream readFile;
                 readFile.open("resources/highscore.txt");
 
@@ -421,10 +422,12 @@ void Game::run(){
                 }
                 readFile.close();
 
+                // open file and enter variables
                 ofstream writeFile("resources/highscore.txt");
                 
                 if (writeFile.is_open()){
                     if (Level > highLevel || (Level == highLevel && countdown < lowTime)){
+                        writeFile << "";
                         writeFile << Level << " " << countdown << " " << Kills;
                     }
                 }
