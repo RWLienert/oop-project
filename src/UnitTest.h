@@ -2,6 +2,7 @@
 #define TESTS_H
 
 #include "Castle.h"
+#include "Ram.h"
 
 // Due to the nature of Enemy and Entity being abstract classes, these cannot be tested
 
@@ -42,11 +43,20 @@ class UnitTest {
             }
         }
 
+        void testRams(Window* win, Ram** rams, int maxEnemies){
+            for (int i = 1; i < maxEnemies; i++){
+                if (rams[i]->getAlive() == true){
+                    cout << "Spawning of rams is incorrect at run";
+                }
+            }
+        }
+
     public:
-        void runObjectTests(Window* win, Castle* castle, Arrow* arrow, Onager** onagers, int maxEnemies){
+        void runObjectTests(Window* win, Castle* castle, Arrow* arrow, Onager** onagers, Ram** rams, int maxEnemies){
             testCastle(win, castle);
             testArrow(win, arrow);
             testOnagers(win,onagers,maxEnemies);
+            testRams(win,rams,maxEnemies);
         }
 };
 
