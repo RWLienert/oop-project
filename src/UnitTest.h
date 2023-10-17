@@ -7,18 +7,46 @@
 
 class UnitTest {
     private:
-        void testCastlePos(Window* win, Castle* castle){
-            if (castle->getPosition().x > 100){
+        void testCastle(Window* win, Castle* castle){
+            if (castle->getPosition().x < (0.2 * win->getSize().x) || castle->getPosition().x > (0.7 * win->getSize().x)){
                 cout << castle->getPosition().x << endl;
                 cout << castle->getPosition().y << endl;
                 cout << win->getSize().x << endl;
                 cout << win->getSize().y << endl;
                 cout << "Error in castle positioning" << endl;
             }
+
+            if (castle->getAlive() != true){
+                cout << "Castle is not on the screen" << endl;
+            }
+            
+            if (castle->getCatapults()[5] == nullptr){
+                cout << "Too many catapults" << endl;
+            }
         }
+
+        void testArrow(Window* win, Arrow* arrow){
+            if (arrow->getAlive() == true){
+                cout << "Arrow was instantiated wrong" << endl;
+            }
+            if ((arrow->getPosition().x < win->getSize().x && arrow->getPosition().x > 0) || (arrow->getPosition().y < win->getSize().y && arrow->getPosition().y > 0)){
+                cout << "Arrow was positioned incorrectly" << endl;
+            }
+        }
+
+        void testOnagers(Window* win, Onager** onagers, int maxEnemies){
+            for (int i = 1; i < maxEnemies; i++){
+                if (onagers[i]->getAlive() == true){
+                    cout << "Spawning of onagers is incorrect at run";
+                }
+            }
+        }
+
     public:
-        void runTests(Window* win, Castle* castle){
-            testCastlePos(win, castle);
+        void runObjectTests(Window* win, Castle* castle, Arrow* arrow, Onager** onagers, int maxEnemies){
+            testCastle(win, castle);
+            testArrow(win, arrow);
+            testOnagers(win,onagers,maxEnemies);
         }
 };
 
