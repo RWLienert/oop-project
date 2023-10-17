@@ -22,6 +22,7 @@ Onager::Onager(int width, int height, string imgDirectory){
     sprite->scale(1.4,1.4);
     alive = false;
     srand(time(NULL));
+    // set fireball array
     onagerFireball = new Fireball*[1];
     for (int i = 0; i < 1; i++){
         onagerFireball[i] = new Fireball("resources/fireball.png");

@@ -93,7 +93,7 @@ void Game::run(){
     highscore.setFillColor(Color::Black);
     highscore.setString("Current Max:");
     highscore.setCharacterSize(50);
-    highscore.setPosition(800,240);
+    highscore.setPosition(820,160);
     level.setFont(*font);
     level.setFillColor(Color(204, 204, 188));
     level.setString("Level: 1");
@@ -455,9 +455,9 @@ void Game::run(){
             }
 
             // load and adjust text
-            level.setPosition(850,310);
-            time.setPosition(850,350);
-            kills.setPosition(850,390);
+            level.setPosition(850,210);
+            time.setPosition(850,250);
+            kills.setPosition(850,290);
             level.setFillColor(Color(105, 80, 78));
             kills.setFillColor(Color(105, 80, 78));
             time.setFillColor(Color(105, 80, 78));
@@ -483,7 +483,7 @@ void Game::run(){
 
 // initialise static variables
 float Game::enemySpawnInterval = 5000;
-int Game::maxEnemies = 8;
+int Game::maxEnemies = 4;
 int Game::Lives = 4;
 int Game::Kills = 0;
 int Game::Level = 1;
