@@ -453,6 +453,7 @@ void Game::run(){
 
                 if (readFile.is_open()){
                     readFile >> highLevel >> lowTime >> maxKilled;
+                    unitTest.runFileTests(highLevel, lowTime, maxKilled);
                 }
                 readFile.close();
                 scoreRead = true;

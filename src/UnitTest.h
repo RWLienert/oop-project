@@ -75,6 +75,18 @@ class UnitTest {
             }
         }
 
+        void testFile(int highLevel, int lowTime, int maxKilled){
+            if (highLevel < 0){
+                cout << "Level scores were incorrectly read (-ve)" << endl;
+            }
+            if (lowTime > 61 || lowTime < 0){
+                cout << "Timing scores were incorrectly read (Outside 0 - 60)" << endl;
+            }
+            if (maxKilled < 0){
+                cout << "Kill count score was incorrectly read (-ve)";
+            }
+        }
+
     public:
         void runObjectTests(Window* win, Castle* castle, Arrow* arrow, Onager** onagers, Ram** rams, int maxEnemies){
             testCastle(win, castle);
@@ -88,6 +100,10 @@ class UnitTest {
             testKills(Kills);
             testPage(page);
             testCountdown(countdown);
+        }
+
+        void runFileTests(int highLevel, int lowTime, int maxKilled){
+            testFile(highLevel, lowTime, maxKilled);
         }
 };
 
