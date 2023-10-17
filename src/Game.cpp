@@ -187,6 +187,7 @@ void Game::run(){
                         deltaTime = clock.restart();
                         countdown = 61;
                         background.setTexture(&grassTexture);
+                        unitTest.runBackgroundTests(background, &grassTexture);
                         page = x;
 
                         // initialise game objects
@@ -209,12 +210,14 @@ void Game::run(){
                     // enters the high score page
                     if (x == 1){
                         background.setTexture(&secondaryTexture);
+                        unitTest.runBackgroundTests(background, &secondaryTexture);
                         page = x;
                     }
 
                     // enters the instructions page
                     if (x == 2){
                         background.setTexture(&secondaryTexture);
+                        unitTest.runBackgroundTests(background, &secondaryTexture);
                         page = x;
                     }
 
@@ -306,10 +309,10 @@ void Game::run(){
                 clickOn = false;
                 deltaTime = clock.restart();
                 background.setTexture(&grassTexture);
+                unitTest.runBackgroundTests(background, &grassTexture);
 
                 // initialise game objects
                 arrow = new Arrow("resources/arrow.png");
-                maxEnemies = 10;
                 onagers = new Onager*[maxEnemies];
                 for (int i = 0; i < maxEnemies; i++) {
                     onagers[i] = new Onager(40,40,"resources/onager.png");
@@ -319,6 +322,7 @@ void Game::run(){
                     rams[i] = new Ram(50,30, "resources/ram.png");
                 }
                 spawnCount = 0;
+                unitTest.runObjectTests(win,castle,arrow,onagers,rams,maxEnemies);
             }
 
             win->clear();
@@ -375,6 +379,7 @@ void Game::run(){
                         firePos.x = -100;
                         firePos.y = -100;
                         castle->getCatapults()[i]->getFireballs()[j]->setFirePos(firePos);
+                        unitTest.runFireTests(firePos);
                     }
                 }
             }
@@ -387,11 +392,13 @@ void Game::run(){
                     firePos.x = -100;
                     firePos.y = -100;
                     onagers[i]->getOnagerFireball()[0]->setFirePos(firePos);
+                    unitTest.runFireTests(firePos);
                 }
             }
             // draw objects
             for (int i = 0; i < maxEnemies; i++){
                 onagers[i]->draw(win);
+                unitTest.runDrawTests(onagers[i], castle);
                 rams[i]->draw(win);
                 if (onagers[i]->getInPosition() == true){
                     for (int j = 0; j < 3; j++){
@@ -430,6 +437,7 @@ void Game::run(){
                     if (Level > highLevel || (Level == highLevel && countdown < lowTime)){
                         writeFile << "";
                         writeFile << Level << " " << countdown << " " << Kills;
+                        unitTest.runHighScoreTests(Level, highLevel, countdown, lowTime);
                     }
                 }
             }
@@ -439,6 +447,7 @@ void Game::run(){
             kills.setString(toString<string,int>("Kills: ", Kills));
             time.setString(toString<string,int>("Time: ", countdown));
             lives.setString(toString<string,int>("Lives: ", Lives));
+            unitTest.runTextTests(level,kills,time,lives,Level,Kills,countdown,Lives);
             win->draw(lives);
 
             castle->draw(win);

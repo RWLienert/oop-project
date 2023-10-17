@@ -49,7 +49,6 @@ void Onager::spawn(int winX, int winY){
     int side = rand() % 4;
     for(int i = 0; i < 3; i++){
         ranShoot[i] = rand() % (59-0+1);
-        cout << ranShoot[i] << endl;
     }
     int onagerRandX, onagerRandY;
     switch (side) {
