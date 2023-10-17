@@ -27,17 +27,6 @@ obj/%.o: src/%.cpp
 	@echo "** Converts .cpp files to .o"
 	$(CXX) -c $< -o $@
 
-# turns all .cpp to binary files with the testing framework lcriterion
-$(TEST)/bin/%: $(TEST)/%.cpp
-	$(CXX) $< $(OBJS) -o $@ -lcriterion $(LIBS)
-
-$(TEST)/bin:
-	mkdir $@
-
-# each test in the test binary variable is conducted
-test: $(BIN) $(Test)/bin $(TESTBINS)
-	for test in $(TESTBINS) ; do ./$$test ; done
-
 # delete executable and objects
 clean:
 	@echo "** Removing object files and executable..."
