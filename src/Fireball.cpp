@@ -18,7 +18,14 @@ Fireball::Fireball(string imgDirectory){
 
 void Fireball::move(float power, Vector2f startPos, Vector2f direction){
     // distance travelled of the fireball
-    float travelledDistance = sqrt(pow(sprite->getPosition().x-startPos.x,2)+pow(sprite->getPosition().y-startPos.y,2));
+    Vector2f currentPosition = sprite->getPosition();
+
+    // Calculate the distance travelled by the fireball
+    float distanceX = currentPosition.x - startPos.x;
+    float distanceY = currentPosition.y - startPos.y;
+
+    float travelledDistance = sqrt(distanceX * distanceX + distanceY * distanceY);
+
     // assigns power
     float distanceScale = 2.5;
     // assigns size of image

@@ -63,6 +63,7 @@ template <typename T, typename U> string toString(T text, U arg){
 
 // game loop
 void Game::run(){
+    UnitTest unitTest;
     // set background and import textures for other pages
     RectangleShape background;
     background.setSize(Vector2f(1300, 800));
@@ -145,6 +146,7 @@ void Game::run(){
                 case Event::KeyPressed:
                     if(e.key.code == Keyboard::Escape && page == 0){
                         page = -1;
+                        gameRun = false;
                         background.setTexture(&mainTexture);
                     }
                     else if (e.key.code == Keyboard::Escape){
@@ -154,7 +156,7 @@ void Game::run(){
             }
 
             // defines keypresses to use the menu
-            if (e.type == Event::KeyReleased){
+            if (e.type == Event::KeyReleased && gameRun == false){
                 if (e.key.code == Keyboard::Up){
                     mainMenu->moveUp();
                 }
@@ -171,6 +173,7 @@ void Game::run(){
                         // clear variables and environment
                         win->clear();
                         gameOver = false;
+                        gameRun = true;
                         clickOn = false;
                         Level = 1;
                         Lives = 4;
@@ -199,6 +202,7 @@ void Game::run(){
                         }
                         
                         load();
+                        unitTest.runTests(win,castle);
                     }
 
                     // enters the high score page
@@ -373,12 +377,31 @@ void Game::run(){
                     }
                 }
             }
-
+            for (int i = 0; i < maxEnemies; i++){
+                Vector2f firePos = *(onagers[i]->getOnagerFireball()[0]->getFirePos());
+                if (firePos.x != -100 && firePos.y != -100){
+                    if (firePos.x > castle->getPosition().x - 550 && firePos.x < castle->getPosition().x + 550 && firePos.y > castle->getPosition().y - 550 && firePos.y < castle->getPosition().y + 550) {
+                        Lives -= 1;
+                    }
+                    firePos.x = -100;
+                    firePos.y = -100;
+                    onagers[i]->getOnagerFireball()[0]->setFirePos(firePos);
+                }
+            }
             // draw objects
             for (int i = 0; i < maxEnemies; i++){
                 onagers[i]->draw(win);
                 rams[i]->draw(win);
+                if (onagers[i]->getInPosition() == true){
+                    for (int j = 0; j < 3; j++){
+                        if (onagers[i]->getRand()[j] == countdown){
+                            onagers[i]->fire();
+                        }
+                    }
+                }
             }
+
+
             win->draw(level);
             win->draw(kills);
             win->draw(time);
@@ -386,6 +409,7 @@ void Game::run(){
             // logic for game over
             if (Lives <= 0){
                 gameOver = true;
+                gameRun = false;
                 page = -1;
                 background.setTexture(&grassTexture);
 

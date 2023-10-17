@@ -31,7 +31,7 @@ Menu::Menu(float width, float height){
     MainMenu[3].setPosition(200,400);
 
     navigate.setFont(font);
-    navigate.setFillColor(Color(204, 204, 188));
+    navigate.setFillColor(Color::White);
     navigate.setString("Press Up & Down Keys to Navigate");
     navigate.setCharacterSize(35);
     navigate.setPosition(20,730);

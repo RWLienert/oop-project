@@ -8,6 +8,7 @@
 #include "Castle.h"
 #include "Arrow.h"
 #include "Onager.h"
+#include "UnitTest.h"
 #include "Ram.h"
 #include <iostream>
 #include <string>
@@ -32,6 +33,7 @@ class Game{
         static int Kills;
         static int Level;
         bool gameOver;
+        bool gameRun;
         static int maxEnemies;
         int spawnCount;
         float enemySpawnTimer;
