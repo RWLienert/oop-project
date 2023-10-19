@@ -142,7 +142,7 @@ class UnitTest {
             if (Level < highLevel){
                 cout << "High score were incorrectly allocated after game (Level)" << endl;
             }
-            else if(countdown > lowTime) {
+            if (Level >= highLevel && countdown > lowTime) {
                 cout << "High score were incorrectly allocated after game (Time)" << endl;
             }
         }
